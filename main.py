@@ -3,12 +3,12 @@ import boto3
 import sys
 import os
 import base64
-from pdf2image import convert_from_path
+from pdf2image import convert_from_bytes
 from io import BytesIO
 
-# Set AWS credentials path
-os.environ["AWS_SHARED_CREDENTIALS_FILE"] = "/Users/sreeramsreedhar/Documents/CIC/nova-test/.aws/credentials"
-os.environ["AWS_CONFIG_FILE"] = "/Users/sreeramsreedhar/Documents/CIC/nova-test/.aws/config"
+# Set AWS credentials
+session = boto3.Session()
+sts = session.client("sts")
 
 # Setup clients
 bedrock_runtime = boto3.client("bedrock-runtime", region_name="us-east-1")
@@ -18,8 +18,14 @@ s3vectors = boto3.client("s3vectors", region_name="us-east-1")
 MODEL_ID = "amazon.nova-2-multimodal-embeddings-v1:0"
 EMBEDDING_DIMENSION = 3072
 VECTOR_BUCKET = "cic-s3-bucket-demo"
-INDEX_NAME = "cic-demo-3"
-PDF_PATH = "/Users/sreeramsreedhar/Documents/CIC/nova-test/CSE355_TMs.pdf"
+INDEX_NAME = "cic-demo-1"
+S3_BUCKET = "cic-multimedia-test"
+S3_FILE = "Amazon Nova Multimodal Embeddings (ASU CIC).pdf"
+
+# Load file from S3
+s3 = boto3.client('s3')
+obj = s3.get_object(Bucket=S3_BUCKET, Key=S3_FILE)
+file_bytes = obj["Body"].read()
 
 # Check/create index
 try:
@@ -40,10 +46,9 @@ except Exception as e:
     sys.exit(1)
 
 # Convert PDF pages to images
-print(f"\nConverting PDF to images: {PDF_PATH}")
 try:
     # Convert PDF pages to images (handles text, images, diagrams, etc.)
-    images = convert_from_path(PDF_PATH, dpi=150)
+    images = convert_from_bytes(file_bytes, dpi=150)
     print(f"PDF converted successfully: {len(images)} pages")
 except Exception as e:
     print(f"Error converting PDF: {e}")
@@ -81,11 +86,11 @@ for i, page_image in enumerate(images):
         embedding = response_body["embeddings"][0]["embedding"]
         
         vectors_to_store.append({
-            "key": f"{os.path.basename(PDF_PATH).replace('.pdf', '')}:page_{i+1}",
+            "key": f"{os.path.basename(S3_FILE).replace('.pdf', '')}:page_{i+1}",
             "data": {"float32": embedding},
             "metadata": {
                 "type": "page_image",
-                "source": os.path.basename(PDF_PATH),
+                "source": os.path.basename(S3_FILE),
                 "page_number": str(i+1),
                 "total_pages": str(len(images))
             }
@@ -115,8 +120,3 @@ except Exception as e:
     sys.exit(1)
 
 print("done!")
-
-
-
-
-
