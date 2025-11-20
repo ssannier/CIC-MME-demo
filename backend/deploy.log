@@ -1,0 +1,26 @@
+[WARNING] aws-cdk-lib.aws_lambda.FunctionOptions#logRetention is deprecated.
+  use `logGroup` instead
+  This API will be removed in the next major release.
+[WARNING] aws-cdk-lib.aws_lambda.FunctionOptions#logRetention is deprecated.
+  use `logGroup` instead
+  This API will be removed in the next major release.
+[WARNING] aws-cdk-lib.aws_lambda.FunctionOptions#logRetention is deprecated.
+  use `logGroup` instead
+  This API will be removed in the next major release.
+[WARNING] aws-cdk-lib.aws_lambda.FunctionOptions#logRetention is deprecated.
+  use `logGroup` instead
+  This API will be removed in the next major release.
+
+✨  Synthesis time: 10.37s
+
+NovaCdkStack: start: Building LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Code
+NovaCdkStack: success: Built LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Code
+NovaCdkStack: start: Building NovaCdkStack Template
+NovaCdkStack: success: Built NovaCdkStack Template
+NovaCdkStack: start: Publishing LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Code (current_account-us-east-1-213451c5)
+NovaCdkStack: start: Publishing NovaCdkStack Template (current_account-us-east-1-26ed1a6b)
+NovaCdkStack: success: Published LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Code (current_account-us-east-1-213451c5)
+NovaCdkStack: success: Published NovaCdkStack Template (current_account-us-east-1-26ed1a6b)
+NovaCdkStack: deploying... [1/1]
+NovaCdkStack: creating CloudFormation changeset...
+❌  NovaCdkStack failed: ToolkitError: Failed to create ChangeSet cdk-deploy-change-set on NovaCdkStack: FAILED, The following hook(s)/validation failed: [AWS::EarlyValidation::PropertyValidation]. To troubleshoot Early Validation errors, use the DescribeEvents API for detailed failure information.
